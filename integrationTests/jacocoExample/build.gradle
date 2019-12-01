@@ -36,7 +36,6 @@ testAll.dependsOn defineIntegrationTest()
 // "jacoco" extension is created automatically for all Test tasks
 // and has type org.gradle.testing.jacoco.plugins.JacocoTaskExtension
 tasks.integrationTest.jacoco {
-  append = false
   destinationFile = new File(project.buildDir, 'jacoco/integrationTest_client.exec')
   // excludes.add 'hellogretty.RequestResponseIT'
 }
