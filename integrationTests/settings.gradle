@@ -1,5 +1,7 @@
 rootProject.name = rootProjectName
 include 'helloGretty'
+include 'helloGrettyMultiproject'
+include 'helloGrettyMultiproject:subproject'
 include 'helloGrettySecure'
 include 'helloGrettyOverlay'
 include 'helloJersey'
