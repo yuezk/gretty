@@ -310,5 +310,7 @@ class JettyConfigurerImpl implements JettyConfigurer {
   void addHandlerToServer(server, handler) {
     ContextHandlerCollection collection = findContextHandlerCollection(server.handler)
     collection.addHandler(handler)
+    collection.manage(handler)
+    handler.start()
   }
 }
