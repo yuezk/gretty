@@ -308,6 +308,14 @@ class JettyConfigurerImpl implements JettyConfigurer {
   void addHandlerToServer(server, handler) {
     def collection = findContextHandlerCollection(server.handler)
     collection.addHandler(handler)
+
+    // we need to make new handler managed by the HandlerCollection 
+    // so it is stopped automatically when the whole server is stopped
+    // or when handler is removed from collection.
+    collection.manage(handler)
+
+    // addHandler and manage don't start the context, so we need to do start it manually
+    handler.start()
   }
 
 }
