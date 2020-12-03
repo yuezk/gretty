@@ -219,7 +219,7 @@ class JettyConfigurerImpl implements JettyConfigurer {
     classLoader.addServerClass('groovyjarjarasm.')
     classLoader.addServerClass('groovyjarjarcommonscli.')
     context.classLoader = classLoader
-    context.addLifeCycleListener(new LifeCycle.Listener() {
+    context.addEventListener(new LifeCycle.Listener() {
       public void lifeCycleStopped(LifeCycle event) {
         context.classLoader = null
       }
