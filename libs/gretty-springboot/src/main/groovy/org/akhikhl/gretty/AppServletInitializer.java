@@ -1,14 +1,20 @@
 package org.akhikhl.gretty;
 
+import static java.util.Objects.requireNonNull;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 public class AppServletInitializer extends SpringBootServletInitializer {
 
-  public static String springBootMainClass;
+  private String springBootMainClass;
 
-  public static void setSpringBootMainClass(String newValue) {
-    springBootMainClass = newValue;
+  @Override
+  public void onStartup(ServletContext servletContext) throws ServletException {
+    springBootMainClass = requireNonNull(servletContext.getInitParameter("GRETTY_SPRING_BOOT_MAIN_CLASS"));
+    super.onStartup(servletContext);
   }
 
   @Override

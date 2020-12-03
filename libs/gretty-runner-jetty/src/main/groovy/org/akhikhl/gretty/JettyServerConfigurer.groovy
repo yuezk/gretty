@@ -111,8 +111,7 @@ class JettyServerConfigurer {
     }
 
     if (webapp.springBoot) {
-      Class AppServletInitializer = Class.forName('org.akhikhl.gretty.AppServletInitializer', true, context.classLoader)
-      AppServletInitializer.setSpringBootMainClass(webapp.springBootMainClass)
+      context.setInitParameter("GRETTY_SPRING_BOOT_MAIN_CLASS", webapp.springBootMainClass)
     }
     context
   }
