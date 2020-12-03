@@ -235,8 +235,7 @@ class TomcatServerConfigurer {
     URL[] classpathUrls = (webapp.webappClassPath ?: []).collect { new URL(it) } as URL[]
     URLClassLoader classLoader = new URLClassLoader(classpathUrls, parentClassLoader)
     if (webapp.springBoot) {
-      Class AppServletInitializer = Class.forName('org.akhikhl.gretty.AppServletInitializer', true, classLoader)
-      AppServletInitializer.setSpringBootMainClass(webapp.springBootMainClass)
+      context.addParameter('GRETTY_SPRING_BOOT_MAIN_CLASS', webapp.springBootMainClass)
     }
     context.addLifecycleListener(new SpringloadedCleanup())
     context.setParentClassLoader(classLoader)
