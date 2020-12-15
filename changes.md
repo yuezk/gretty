@@ -2,6 +2,20 @@
 
 [![logo](https://gretty-gradle-plugin.github.io/gretty-doc/images/gretty_logo.png "gretty logo")](https://github.com/gretty-gradle-plugin/gretty)
 
+### Version 4.0.0
+
+* Gretty requires JDK11+.
+
+* Gretty supports only Tomcat 10 and Jetty 11 (`Jakarta` versions of the containers). All thanks goes to [@f4lco](https://github.com/f4lco).
+
+* Updated ASM to 9.0.
+
+* Non-blocking farm initialization. Fix context cleanup on "redeploy" (#181)
+
+* Ability to add additional files to product build (#179)
+
+* Migrated from Travis to GitHub Actions for CI/CD/tests.
+
 ### Version 3.0.3
 
 * Updated ASM to 8.0.1.

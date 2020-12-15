@@ -20,6 +20,22 @@ If you are new with Gretty, try [getting started](https://gretty-gradle-plugin.g
 
 #### :star: What's new
 
+December 15, 2020, Gretty 4.0.0 is out and available at [Gradle Plugins](https://plugins.gradle.org/plugin/org.gretty) and [Bintray](https://bintray.com/javabrett/maven/org.gretty/view).
+
+* Changes in this version:
+
+* Gretty requires JDK11+.
+
+* Gretty supports only Tomcat 10 and Jetty 11 (`Jakarta` versions of the containers). All thanks goes to [@f4lco](https://github.com/f4lco).
+
+* Updated ASM to 9.0.
+
+* Non-blocking farm initialization. Fix context cleanup on "redeploy" (#181)
+
+* Ability to add additional files to product build (#179)
+
+* Migrated from Travis to GitHub Actions for CI/CD/tests.
+
 May 7, 2020, Gretty 3.0.3 is out and available at [Gradle Plugins](https://plugins.gradle.org/plugin/org.gretty) and [Bintray](https://bintray.com/javabrett/maven/org.gretty/view).
 
 * Changes in this version:
