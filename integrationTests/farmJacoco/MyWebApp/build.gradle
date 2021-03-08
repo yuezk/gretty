@@ -36,17 +36,13 @@ farm {
       sourceDirectories.setFrom project.files(project.sourceSets.main.allSource.srcDirs)
       classDirectories.setFrom project.sourceSets.main.output
 
-      doFirst {
-        // Other webapp projects should be added in execution phase, not configuration phase.
-        // When accessing webapp projects in configuration phase,
-        // their properties (including sourceSets) are yet undefined.
-        for(Project webappProject in tasks.farmBeforeIntegrationTest.webAppProjects) {
-          if(webappProject != project) {
-            additionalSourceDirs webappProject.files(webappProject.sourceSets.main.allSource.srcDirs)
-            additionalClassDirs webappProject.sourceSets.main.output
-          }
-        }
+      // Other webapp projects should be added in execution phase, not configuration phase.
+      // So we need to access those projects lazily.
+      def webAppProjects = tasks.named("farmBeforeIntegrationTest").map {
+        it.webAppProjects.findAll { it != project }
       }
+      additionalSourceDirs.from(webAppProjects.map { it.sourceSets.main.allSource.srcDirs })
+      additionalClassDirs.from(webAppProjects.map { it.sourceSets.main.output })
 
       def reportDir = project.reporting.file("jacoco/farmIntegrationTest_server/html")
       reports {
