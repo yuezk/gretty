@@ -14,6 +14,7 @@ import org.apache.commons.io.FilenameUtils
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.tasks.Copy
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -252,6 +253,8 @@ class GrettyPlugin implements Plugin<Project> {
         }
 
         from ProjectUtils.getWebAppDir(project)
+
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
 
         def closure = project.gretty.webappCopy
         closure = closure.rehydrate(it, closure.owner, closure.thisObject)
