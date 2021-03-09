@@ -192,12 +192,12 @@ class IntegrationTestPlugin extends BasePlugin {
   protected void configureTasksAfterEvaluate(Project project) {
     super.configureTasksAfterEvaluate(project)
 
-    project.tasks.withType(AppBeforeIntegrationTestTask) {
+    project.tasks.withType(AppBeforeIntegrationTestTask).configureEach {
       dependsOn project.tasks.test
       dependsOn project.rootProject.tasks.unpackGeckoDriver
     }
 
-    project.tasks.withType(Test) { task ->
+    project.tasks.withType(Test).configureEach { task ->
       if(task.name != 'test')
         task.mustRunAfter project.tasks.test
       dependsOn project.rootProject.tasks.unpackGeckoDriver

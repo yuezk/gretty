@@ -57,7 +57,7 @@ class AppAfterIntegrationTestTask extends AppStopTask {
     }
     integrationTestTask_ = integrationTestTask
     def thisTask = this
-    project.tasks.all { t ->
+    project.tasks.configureEach { t ->
       if(t.name == thisTask.integrationTestTask)
         t.finalizedBy thisTask
     }

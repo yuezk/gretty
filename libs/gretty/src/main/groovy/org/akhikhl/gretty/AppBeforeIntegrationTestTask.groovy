@@ -63,7 +63,7 @@ class AppBeforeIntegrationTestTask extends AppStartTask {
     }
     integrationTestTask_ = integrationTestTask
     def thisTask = this
-    project.tasks.all { t ->
+    project.tasks.configureEach { t ->
       if(t.name == thisTask.integrationTestTask) {
         t.dependsOn thisTask
         thisTask.dependsOn { project.tasks.prepareInplaceWebApp }
