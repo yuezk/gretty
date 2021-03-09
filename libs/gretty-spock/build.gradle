@@ -1,4 +1,6 @@
-apply from: rootProject.file('common.gradle')
+plugins {
+  id 'grettybuild.common'
+}
 
 dependencies {
   api libs.groovy_all
