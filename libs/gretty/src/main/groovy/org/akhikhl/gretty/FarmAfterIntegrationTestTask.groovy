@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory
 @CompileStatic(TypeCheckingMode.SKIP)
 class FarmAfterIntegrationTestTask extends FarmStopTask {
 
-  private static final Logger log = LoggerFactory.getLogger(FarmBeforeIntegrationTestTask)
+  private static final Logger log = LoggerFactory.getLogger(FarmAfterIntegrationTestTask)
 
   private String integrationTestTask_
   private boolean integrationTestTaskAssigned
