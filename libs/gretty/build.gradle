@@ -1,7 +1,6 @@
 plugins {
-  id 'java-gradle-plugin'
+  id 'grettybuild.plugin'
   id 'com.gradle.plugin-publish' version '0.13.0'
-  id 'grettybuild.common'
 }
 
 dependencies {

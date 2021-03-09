@@ -1,0 +1,8 @@
+plugins {
+    id 'grettybuild.common'
+    id 'java-gradle-plugin'
+}
+
+afterEvaluate {
+    configurePublications('pluginMaven')
+}
