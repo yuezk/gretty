@@ -1,0 +1,15 @@
+plugins {
+    id 'grettybuild.common'
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
+afterEvaluate {
+    configurePublications('mavenJava')
+}

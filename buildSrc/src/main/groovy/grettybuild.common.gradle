@@ -26,35 +26,8 @@ compileGroovy {
     groovyOptions.configurationScript = file("${rootProject.projectDir}/gradle/config.groovy")
 }
 
-afterEvaluate {
-
-    dependencies {
-        testImplementation libs.groovy_all
-        testImplementation libs.spock
-    }
-
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
-
-    task sourcesJar(type: Jar, dependsOn: classes, description: 'Creates sources jar') {
-        classifier = 'sources'
-        from sourceSets.main.allSource
-    }
-
-    task javadocJar(type: Jar, description: 'Creates javadoc jar') {
-        dependsOn javadoc
-        classifier = 'javadoc'
-        from javadoc.destinationDir
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE
-        if(tasks.findByName('groovydoc')) {
-            dependsOn groovydoc
-            from groovydoc.destinationDir
-        }
-    }
-
-    artifacts {
-        archives sourcesJar, javadocJar
-    }
+ext.configurePublications = { String publicationName ->
+    String capitalizedPublicationName = publicationName.capitalize()
 
     def thisProject = project
 
@@ -87,23 +60,24 @@ afterEvaluate {
     }
 
     publishing {
-        publications {
-            mavenJava(MavenPublication) {
-                from components.java
-                pom.withXml {
-                    asNode().children().last() + configurePom
-                }
-                artifact tasks.sourcesJar
-                artifact tasks.javadocJar
+        publications.named(publicationName, MavenPublication) {
+            pom.withXml {
+                asNode().children().last() + configurePom
             }
+            artifact tasks.sourcesJar
+            artifact tasks.javadocJar
         }
+    }
 
-        repositories {
-            maven {
-                name 'private'
-                url "file:/${project.rootProject.ext.privateRepoDir}"
-            }
-        }
+    project.task('publishToPrivateRepository') {
+        dependsOn "publish${capitalizedPublicationName}PublicationToPrivateRepository"
+    }
+    project.tasks.build.dependsOn project.tasks.publishToPrivateRepository
+    rootProject.tasks.testAllIntegrationTests.dependsOn project.tasks.publishToPrivateRepository
+
+    tasks.artifactoryPublish {
+        dependsOn { project.tasks."generatePomFileFor${capitalizedPublicationName}Publication" }
+        publications publicationName
     }
 
     install.repositories.mavenInstaller.pom*.whenConfigured { pom ->
@@ -112,18 +86,47 @@ afterEvaluate {
             configurePom.rehydrate(delegate, owner, thisObject).call()
         }
     }
+}
 
-    project.task('publishToPrivateRepository') {
-        dependsOn "publishMavenJavaPublicationToPrivateRepository"
+afterEvaluate {
+    dependencies {
+        testImplementation libs.groovy_all
+        testImplementation libs.spock
     }
 
-    project.tasks.build.dependsOn project.tasks.publishToPrivateRepository
-    rootProject.tasks.testAllIntegrationTests.dependsOn project.tasks.publishToPrivateRepository
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 
-    tasks.artifactoryPublish {
-        dependsOn { project.tasks.generatePomFileForMavenJavaPublication }
-        publications 'mavenJava'
+    task sourcesJar(type: Jar, dependsOn: classes, description: 'Creates sources jar') {
+        classifier = 'sources'
+        from sourceSets.main.allSource
     }
+
+    task javadocJar(type: Jar, description: 'Creates javadoc jar') {
+        dependsOn javadoc
+        classifier = 'javadoc'
+        from javadoc.destinationDir
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+        if(tasks.findByName('groovydoc')) {
+            dependsOn groovydoc
+            from groovydoc.destinationDir
+        }
+    }
+
+    artifacts {
+        archives sourcesJar, javadocJar
+    }
+
+    publishing {
+        repositories {
+            maven {
+                name 'private'
+                url "file:/${project.rootProject.ext.privateRepoDir}"
+            }
+        }
+    }
+
+    def thisProject = project
 
     bintray {
         user = project.bintrayUser
