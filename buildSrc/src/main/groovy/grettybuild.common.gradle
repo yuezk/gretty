@@ -31,6 +31,7 @@ ext.configurePublications = { String publicationName ->
 
     def thisProject = project
 
+    // When the maven plugin has been removed, this should be converted to using the API on MavenPublication.pom
     def configurePom = {
         resolveStrategy = Closure.DELEGATE_FIRST
         packaging 'jar'
@@ -88,33 +89,32 @@ ext.configurePublications = { String publicationName ->
     }
 }
 
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+
+task sourcesJar(type: Jar, dependsOn: classes, description: 'Creates sources jar') {
+    archiveClassifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, description: 'Creates javadoc jar') {
+    dependsOn javadoc
+    archiveClassifier = 'javadoc'
+    from javadoc.destinationDir
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    def groovydocTask = tasks.groovydoc
+    dependsOn groovydocTask
+    from groovydocTask.destinationDir
+}
+
+artifacts {
+    archives sourcesJar, javadocJar
+}
+
 afterEvaluate {
     dependencies {
         testImplementation libs.groovy_all
         testImplementation libs.spock
-    }
-
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
-
-    task sourcesJar(type: Jar, dependsOn: classes, description: 'Creates sources jar') {
-        classifier = 'sources'
-        from sourceSets.main.allSource
-    }
-
-    task javadocJar(type: Jar, description: 'Creates javadoc jar') {
-        dependsOn javadoc
-        classifier = 'javadoc'
-        from javadoc.destinationDir
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE
-        if(tasks.findByName('groovydoc')) {
-            dependsOn groovydoc
-            from groovydoc.destinationDir
-        }
-    }
-
-    artifacts {
-        archives sourcesJar, javadocJar
     }
 
     publishing {
