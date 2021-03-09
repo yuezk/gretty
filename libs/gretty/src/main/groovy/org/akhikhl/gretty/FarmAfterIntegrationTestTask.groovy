@@ -90,7 +90,7 @@ class FarmAfterIntegrationTestTask extends FarmStopTask {
     integrationTestTask_ = integrationTestTask
     def thisTask = this
     getIntegrationTestProjects().each { proj ->
-      proj.tasks.all { t ->
+      proj.tasks.configureEach { t ->
         if(t.name == thisTask.integrationTestTask)
           thisTask.mustRunAfter t
         else if(GradleUtils.instanceOf(t, 'org.akhikhl.gretty.AppAfterIntegrationTestTask') && t.integrationTestTask == thisTask.integrationTestTask)

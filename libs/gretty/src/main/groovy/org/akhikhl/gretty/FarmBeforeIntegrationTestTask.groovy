@@ -109,7 +109,7 @@ class FarmBeforeIntegrationTestTask extends FarmStartTask {
     integrationTestTask_ = integrationTestTask
     def thisTask = this
     project.rootProject.allprojects.each { proj ->
-      proj.tasks.all { Task t ->
+      proj.tasks.configureEach { Task t ->
         if(getIntegrationTestProjects().contains(proj)) {
           if (t.name == thisTask.integrationTestTask) {
             t.mustRunAfter thisTask

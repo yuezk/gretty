@@ -81,7 +81,7 @@ class FarmIntegrationTestTask extends DefaultTask {
     integrationTestTask_ = integrationTestTask
     def thisTask = this
     getIntegrationTestProjects().each { proj ->
-      proj.tasks.all { t ->
+      proj.tasks.configureEach { t ->
         if(t.name == thisTask.integrationTestTask)
           thisTask.dependsOn t
       }
