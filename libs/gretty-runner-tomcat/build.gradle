@@ -1,6 +1,8 @@
 import org.gradle.util.VersionNumber
 
-apply from: rootProject.file('common.gradle')
+plugins {
+  id 'grettybuild.common'
+}
 
 dependencies {
   api project(':libs:gretty-runner')

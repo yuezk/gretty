@@ -1,9 +1,8 @@
 plugins {
   id 'java-gradle-plugin'
   id 'com.gradle.plugin-publish' version '0.13.0'
+  id 'grettybuild.common'
 }
-
-apply from: rootProject.file('common.gradle')
 
 dependencies {
   api project(':libs:gretty-core'), {
