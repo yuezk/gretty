@@ -165,26 +165,4 @@ class FarmConfigurer {
       destWebAppConfigs.add(webappConfig)
     }
   }
-
-  /**
-   *
-   * @param webAppRef
-   * @return
-   * @deprecated use {@link FarmConfigurerUtil} instead
-   */
-  @Deprecated
-  Project resolveWebAppRefToProject(webAppRef) {
-    FarmConfigurerUtil.resolveProjectRefToProject(project, webAppRef)
-  }
-
-  /**
-   *
-   * @param webAppRef
-   * @return
-   * @deprecated use {@link FarmConfigurerUtil} instead
-   */
-  @Deprecated
-  File resolveWebAppRefToWarFile(webAppRef) {
-    FarmConfigurerUtil.resolveWebAppRefToWarFile(project, webAppRef)
-  }
 }
