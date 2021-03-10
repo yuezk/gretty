@@ -32,7 +32,7 @@ task('myIntegrationTest', type: Test, dependsOn: 'test') {
   }
 }
 
-task('myBeforeIntegrationTest', type: JettyBeforeIntegrationTestTask) {
+task('myBeforeIntegrationTest', type: AppBeforeIntegrationTestTask) {
 
   integrationTestTask 'myIntegrationTest'
 
