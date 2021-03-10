@@ -19,16 +19,4 @@ class GrettyConfig {
 
   @Delegate
   protected WebAppConfig webAppConfig = new WebAppConfig()
-
-  // use contextConfigFile instead
-  @Deprecated
-  def getJettyEnvXmlFile() {
-    webAppConfig.getJettyEnvXmlFile()
-  }
-
-  // use contextConfigFile instead
-  @Deprecated
-  void setJettyEnvXmlFile(newValue) {
-    webAppConfig.setJettyEnvXmlFile(newValue)
-  }
 }

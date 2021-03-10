@@ -90,16 +90,4 @@ class AppStartTask extends StartBaseTask implements TaskWithServerConfig, TaskWi
   protected String getStopCommand() {
     'gradle appStop'
   }
-
-  // use contextConfigFile instead
-  @Deprecated
-  def getJettyEnvXmlFile() {
-    webAppConfig.getJettyEnvXmlFile()
-  }
-
-  // use contextConfigFile instead
-  @Deprecated
-  void setJettyEnvXmlFile(newValue) {
-    webAppConfig.setJettyEnvXmlFile(newValue)
-  }
 }
