@@ -95,12 +95,6 @@ class ServerConfig {
     return result
   }
 
-  // use serverConfigFile instead
-  @Deprecated
-  def getJettyXmlFile() {
-    serverConfigFile
-  }
-
   // use httpPort instead
   @Deprecated
   Integer getPort() {
@@ -149,12 +143,6 @@ class ServerConfig {
     if(onStop == null)
       onStop = []
     onStop.add newValue
-  }
-
-  // use serverConfigFile instead
-  @Deprecated
-  void setJettyXmlFile(newValue) {
-    serverConfigFile = newValue
   }
 
   // use httpPort instead

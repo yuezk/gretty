@@ -31,16 +31,4 @@ class GrettyConfig {
   void setJettyEnvXmlFile(newValue) {
     webAppConfig.setJettyEnvXmlFile(newValue)
   }
-
-  // use serverConfigFile instead
-  @Deprecated
-  def getJettyXmlFile() {
-    serverConfig.getJettyXmlFile()
-  }
-
-  // use serverConfigFile instead
-  @Deprecated
-  void setJettyXmlFile(newValue) {
-    serverConfig.setJettyXmlFile(newValue)
-  }
 }

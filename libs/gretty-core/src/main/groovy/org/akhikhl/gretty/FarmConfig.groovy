@@ -38,24 +38,12 @@ class FarmConfig {
     integrationTestProjects_.asImmutable()
   }
 
-  // use serverConfigFile instead
-  @Deprecated
-  def getJettyXmlFile() {
-    serverConfig.getJettyXmlFile()
-  }
-
   Map getWebAppRefs() {
     webAppRefs_.asImmutable()
   }
 
   void integrationTestProject(Object project) {
     integrationTestProjects_.add(project)
-  }
-
-  // use serverConfigFile instead
-  @Deprecated
-  void setJettyXmlFile(newValue) {
-    serverConfig.setJettyXmlFile(newValue)
   }
 
   void setWebAppRefs(Map newValue) {
