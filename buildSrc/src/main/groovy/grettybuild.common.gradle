@@ -58,8 +58,6 @@ ext.configurePublications = { String publicationName ->
                     }
                 }
             }
-            artifact tasks.sourcesJar
-            artifact tasks.javadocJar
         }
     }
 
@@ -109,15 +107,12 @@ ext.configurePublications = { String publicationName ->
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
-task sourcesJar(type: Jar, dependsOn: classes, description: 'Creates sources jar') {
-    archiveClassifier = 'sources'
-    from sourceSets.main.allSource
+java {
+    withJavadocJar()
+    withSourcesJar()
 }
 
-task javadocJar(type: Jar, description: 'Creates javadoc jar') {
-    dependsOn javadoc
-    archiveClassifier = 'javadoc'
-    from javadoc.destinationDir
+tasks.named("javadocJar", Jar).configure {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
     def groovydocTask = tasks.groovydoc
     dependsOn groovydocTask
