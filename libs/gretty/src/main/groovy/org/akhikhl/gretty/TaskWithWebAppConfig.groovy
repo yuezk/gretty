@@ -1,6 +1,5 @@
 package org.akhikhl.gretty
 
-import org.gradle.api.model.ReplacedBy
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Internal
@@ -28,9 +27,6 @@ interface TaskWithWebAppConfig {
     @PathSensitive(PathSensitivity.NONE)
     @Optional
     Object getContextConfigFile()
-
-    @ReplacedBy("contextConfigFile")
-    Object getJettyEnvXmlFile()
 
     @Internal
     Object getScanDirs()

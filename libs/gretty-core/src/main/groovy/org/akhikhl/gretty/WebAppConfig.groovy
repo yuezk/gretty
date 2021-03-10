@@ -130,12 +130,6 @@ class WebAppConfig {
     return result
   }
 
-  // use contextConfigFile instead
-  @Deprecated
-  def getJettyEnvXmlFile() {
-    contextConfigFile
-  }
-
   void initParameter(key, value) {
     if(initParameters == null)
       initParameters = [:]
@@ -179,11 +173,5 @@ class WebAppConfig {
       fastReload = newValue
     else
       fastReload = [ newValue ]
-  }
-
-  // use contextConfigFile instead
-  @Deprecated
-  void setJettyEnvXmlFile(newValue) {
-    contextConfigFile = newValue
   }
 }

@@ -1,6 +1,5 @@
 package org.akhikhl.gretty
 
-import org.gradle.api.model.ReplacedBy
 import org.gradle.api.tasks.Console
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
@@ -159,9 +158,6 @@ interface TaskWithServerConfig {
 
     @Optional @Input
     Boolean getLiveReloadEnabled()
-
-    @ReplacedBy("serverConfigFile")
-    Object getJettyXmlFile()
 
     @Internal
     int getRandomFreePort()
