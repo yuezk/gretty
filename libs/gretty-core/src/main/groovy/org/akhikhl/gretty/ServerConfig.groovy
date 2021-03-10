@@ -95,12 +95,6 @@ class ServerConfig {
     return result
   }
 
-  // use httpPort instead
-  @Deprecated
-  Integer getPort() {
-    httpPort
-  }
-
   int getRandomFreePort() {
     RANDOM_FREE_PORT
   }
@@ -143,12 +137,6 @@ class ServerConfig {
     if(onStop == null)
       onStop = []
     onStop.add newValue
-  }
-
-  // use httpPort instead
-  @Deprecated
-  void setPort(Integer newValue) {
-    httpPort = newValue
   }
 
   void systemProperty(String name, Object value) {
