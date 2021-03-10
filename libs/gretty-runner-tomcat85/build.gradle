@@ -1,7 +1,7 @@
 import org.gradle.util.VersionNumber
 
 plugins {
-  id 'grettybuild.common'
+  id 'grettybuild.library'
 }
 
 dependencies {
