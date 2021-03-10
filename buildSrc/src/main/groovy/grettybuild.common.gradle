@@ -1,7 +1,6 @@
 plugins {
     id 'java-library'
     id 'groovy'
-    id 'maven'
     id 'maven-publish'
     id 'com.jfrog.artifactory'
     id 'com.jfrog.bintray'
@@ -31,42 +30,34 @@ ext.configurePublications = { String publicationName ->
 
     def thisProject = project
 
-    // When the maven plugin has been removed, this should be converted to using the API on MavenPublication.pom
-    def configurePom = {
-        resolveStrategy = Closure.DELEGATE_FIRST
-        packaging 'jar'
-        description thisProject.description
-        url thisProject.project_website
-
-        scm {
-            url thisProject.project_scm
-            connection thisProject.project_scm
-            developerConnection thisProject.project_scm
-        }
-
-        licenses {
-            license {
-                name thisProject.license
-                url thisProject.license_url
-                distribution 'repo'
-            }
-        }
-
-        developers {
-            developer {
-                id thisProject.developerId
-                name thisProject.developerName
-            }
-        }
-    }
-
     publishing {
         publications.named(publicationName, MavenPublication) {
-            pom.withXml {
-                asNode().children().last() + configurePom
+            pom {
+                packaging = 'jar'
+                description = thisProject.description
+                url = thisProject.project_website
+
+                scm {
+                    url = thisProject.project_scm
+                    connection = thisProject.project_scm
+                    developerConnection = thisProject.project_scm
+                }
+
+                licenses {
+                    license {
+                        name = thisProject.license
+                        url = thisProject.license_url
+                        distribution = 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = thisProject.developerId
+                        name = thisProject.developerName
+                    }
+                }
             }
-            artifact tasks.sourcesJar
-            artifact tasks.javadocJar
         }
     }
 
@@ -81,57 +72,10 @@ ext.configurePublications = { String publicationName ->
         publications publicationName
     }
 
-    install.repositories.mavenInstaller.pom*.whenConfigured { pom ->
-        pom.project {
-            name thisProject.name
-            configurePom.rehydrate(delegate, owner, thisObject).call()
-        }
-    }
-}
-
-sourceCompatibility = JavaVersion.VERSION_11
-targetCompatibility = JavaVersion.VERSION_11
-
-task sourcesJar(type: Jar, dependsOn: classes, description: 'Creates sources jar') {
-    archiveClassifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-task javadocJar(type: Jar, description: 'Creates javadoc jar') {
-    dependsOn javadoc
-    archiveClassifier = 'javadoc'
-    from javadoc.destinationDir
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
-    def groovydocTask = tasks.groovydoc
-    dependsOn groovydocTask
-    from groovydocTask.destinationDir
-}
-
-artifacts {
-    archives sourcesJar, javadocJar
-}
-
-afterEvaluate {
-    dependencies {
-        testImplementation libs.groovy_all
-        testImplementation libs.spock
-    }
-
-    publishing {
-        repositories {
-            maven {
-                name 'private'
-                url "file:/${project.rootProject.ext.privateRepoDir}"
-            }
-        }
-    }
-
-    def thisProject = project
-
     bintray {
         user = project.bintrayUser
         key = project.bintrayKey
-        configurations = ['archives']
+        publications = [publicationName]
         pkg {
             repo = thisProject.bintrayRepo
             userOrg = thisProject.bintrayUserOrg
@@ -158,5 +102,35 @@ afterEvaluate {
         tasks.bintrayUpload.finalizedBy rootProject.tasks.bintraySign
         rootProject.tasks.bintraySign.onlyIf { !tasks.bintrayUpload.getState().getFailure() }
     }
+}
 
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+tasks.named("javadocJar", Jar).configure {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    def groovydocTask = tasks.groovydoc
+    dependsOn groovydocTask
+    from groovydocTask.destinationDir
+}
+
+afterEvaluate {
+    dependencies {
+        testImplementation libs.groovy_all
+        testImplementation libs.spock
+    }
+
+    publishing {
+        repositories {
+            maven {
+                name 'private'
+                url "file:/${project.rootProject.ext.privateRepoDir}"
+            }
+        }
+    }
 } // afterEvaluate
