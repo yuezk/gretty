@@ -28,9 +28,11 @@ final class ProductsConfigurer {
   }
 
   void configureProducts() {
+    // FIXME does not use task configuration avoidance #41
     project.task('buildAllProducts', group: 'gretty') {
       description = 'Builds all configured gretty products.'
     }
+    // FIXME does not use task configuration avoidance #41
     project.task('archiveAllProducts', group: 'gretty') {
       description = 'Archives all configured gretty products.'
     }
