@@ -55,6 +55,7 @@ class ProductConfigurer {
 
   void configureProduct() {
 
+    // FIXME does not use task configuration avoidance #41
     def buildProductTask = project.task("buildProduct${productName}", group: 'gretty') { task ->
 
       description = "Builds gretty product${ productName ? ' ' + productName : '' }."
