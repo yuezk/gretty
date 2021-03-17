@@ -10,7 +10,7 @@ jobs:
 
     strategy:
       matrix:
-        java: [8, 11, 15]
+        java: [8, 11, 16]
 
     env:
       TEST_ALL_CONTAINERS: "['jetty9.3','jetty9.4','tomcat85','tomcat9']"
