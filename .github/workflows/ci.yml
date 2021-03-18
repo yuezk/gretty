@@ -14,7 +14,7 @@ jobs:
 
     env:
       TEST_ALL_CONTAINERS: "['jetty9.3','jetty9.4','tomcat85','tomcat9']"
-      GRADLE_VERSION: 6.7
+      GRADLE_VERSION: 6.8.3
       GECKO_DRIVER_VERSION: 0.28.0
       BINTRAY_REPO: maven
       BINTRAY_PACKAGE: org.gretty
