@@ -84,20 +84,37 @@ final class ProjectUtils {
   }
 
   private static void addProjectClassPathWithDependencies(Set<URL> urls, Project proj, String dependencyConfigName) {
-    if(proj.sourceSets.main.output.files.any { new File(it, 'META-INF/web-fragment.xml').exists() })
-      urls.add proj.jar.archivePath.toURI().toURL()
-    else
-      urls.addAll proj.sourceSets.main.output.files.collect { it.toURI().toURL() }
     def dependencyConfig = proj.configurations.findByName(dependencyConfigName)
     if(dependencyConfig) {
-      def files = dependencyConfig.fileCollection { !(it instanceof ProjectDependency) }
-      def grettyProvidedCompileConfig = proj.configurations.findByName('grettyProvidedCompile')
-      if(grettyProvidedCompileConfig)
-        files = files - grettyProvidedCompileConfig
-      urls.addAll(files.collect { it.toURI().toURL() })
-      dependencyConfig.allDependencies.withType(ProjectDependency).each { dep ->
-        addProjectClassPathWithDependencies(urls, dep.getDependencyProject(), dependencyConfigName)
+      Set<File> dependencyProjectArchives = new LinkedHashSet<>()
+
+      def collectProjectDependencies
+      collectProjectDependencies= { Project project ->
+        def outputFiles = project.sourceSets.main.output.files
+        if(outputFiles.any { new File(it, 'META-INF/web-fragment.xml').exists() }) {
+          urls.add(project.jar.archivePath.toURI().toURL())
+        } else {
+          urls.addAll(outputFiles.collect { it.toURI().toURL() })
+          dependencyProjectArchives.add(project.jar.archivePath)
+        }
+
+        def depConfig = project.configurations.findByName(dependencyConfigName)
+        if (depConfig) {
+          depConfig.allDependencies.withType(ProjectDependency).each {
+            collectProjectDependencies(it.dependencyProject)
+          }
+        }
       }
+
+      collectProjectDependencies(proj)
+
+      def files = dependencyConfig.resolve()
+      def grettyProvidedCompileConfig = proj.configurations.findByName('grettyProvidedCompile')
+      if(grettyProvidedCompileConfig) {
+        files = files - grettyProvidedCompileConfig
+      }
+      files = files - dependencyProjectArchives
+      urls.addAll(files.collect { it.toURI().toURL() })
     }
   }
 
