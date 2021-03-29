@@ -10,6 +10,7 @@ package org.akhikhl.gretty
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import org.apache.commons.io.FilenameUtils
+import org.apache.tools.ant.taskdefs.Java
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ProjectDependency
 import org.slf4j.Logger
@@ -83,38 +84,44 @@ final class ProjectUtils {
         addProjectClassPathWithOverlays(urls, proj.project(overlay), dependencyConfigName)
   }
 
-  private static void addProjectClassPathWithDependencies(Set<URL> urls, Project proj, String dependencyConfigName) {
-    def dependencyConfig = proj.configurations.findByName(dependencyConfigName)
-    if(dependencyConfig) {
-      Set<File> dependencyProjectArchives = new LinkedHashSet<>()
+  private static void addProjectClassPathWithDependencies(Set<URL> urls, Project project, String dependencyConfigName) {
+    Set<File> files = []
 
-      def collectProjectDependencies
-      collectProjectDependencies= { Project project ->
-        def outputFiles = project.sourceSets.main.output.files
-        if(outputFiles.any { new File(it, 'META-INF/web-fragment.xml').exists() }) {
-          urls.add(project.jar.archivePath.toURI().toURL())
-        } else {
-          urls.addAll(outputFiles.collect { it.toURI().toURL() })
-          dependencyProjectArchives.add(project.jar.archivePath)
-        }
+    def (outputs, archives) = collectOutputsAndArchivesWithDependencies(project, dependencyConfigName)
+    files += outputs
+    files += project.configurations.findByName(dependencyConfigName).collect().toSet()
+    files -= archives
 
-        def depConfig = project.configurations.findByName(dependencyConfigName)
-        if (depConfig) {
-          depConfig.allDependencies.withType(ProjectDependency).each {
-            collectProjectDependencies(it.dependencyProject)
-          }
-        }
+    def grettyProvidedCompileFiles = project.configurations.findByName('grettyProvidedCompile').collect().toSet()
+    files -= grettyProvidedCompileFiles
+
+    urls.addAll(files.collect { it.toURI().toURL() })
+  }
+
+  private static collectOutputsAndArchivesWithDependencies(Project rootProject, String dependencyConfigName) {
+    Set<File> outputs = []
+    Set<File> archives = []
+
+    walkProjectDependencies(rootProject, dependencyConfigName) { Project project ->
+      def outputFiles = project.sourceSets.main.output.files
+      def archiveFile = project.jar.archiveFile.get().asFile
+      if(outputFiles.any { new File(it, 'META-INF/web-fragment.xml').exists() }) {
+        outputs.add(archiveFile)
+      } else {
+        outputs.addAll(outputFiles)
+        archives.add(archiveFile)
       }
+    }
 
-      collectProjectDependencies(proj)
+    return new Tuple2(outputs, archives)
+  }
 
-      def files = dependencyConfig.resolve()
-      def grettyProvidedCompileConfig = proj.configurations.findByName('grettyProvidedCompile')
-      if(grettyProvidedCompileConfig) {
-        files = files - grettyProvidedCompileConfig
-      }
-      files = files - dependencyProjectArchives
-      urls.addAll(files.collect { it.toURI().toURL() })
+  private static void walkProjectDependencies(Project project, String dependencyConfigName, Closure projectClosure) {
+    def dependencyConfig = project.configurations.findByName(dependencyConfigName)
+    if (!dependencyConfig) return
+    projectClosure(project)
+    dependencyConfig.allDependencies.withType(ProjectDependency).each {
+      walkProjectDependencies(it.dependencyProject, dependencyConfigName, projectClosure)
     }
   }
 
