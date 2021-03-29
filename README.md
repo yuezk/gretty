@@ -2,12 +2,12 @@
 
 ![Build Status](https://github.com/gretty-gradle-plugin/gretty/workflows/CI/badge.svg?branch=gretty-3.x)
 ![Maintenance Status](https://img.shields.io/maintenance/yes/2021.svg)
-[![Latest release](https://img.shields.io/badge/release-3.0.3-47b31f.svg)](https://github.com/gretty-gradle-plugin/gretty/tree/v3.0.3)
-[![Snapshot](https://img.shields.io/badge/current-3.0.4--SNAPSHOT-47b31f.svg)](https://github.com/gretty-gradle-plugin/gretty/tree/master)
+[![Latest release](https://img.shields.io/badge/release-3.0.4-47b31f.svg)](https://github.com/gretty-gradle-plugin/gretty/tree/v3.0.4)
+[![Snapshot](https://img.shields.io/badge/current-3.0.5--SNAPSHOT-47b31f.svg)](https://github.com/gretty-gradle-plugin/gretty/tree/master)
 [![License](https://img.shields.io/badge/license-MIT-47b31f.svg)](#copyright-and-license)
 
 Gretty is a feature-rich gradle plugin for running web-apps on embedded servlet containers.
-It supports Jetty versions 7, 8 and 9, Tomcat versions 8.5 and 9, multiple web-apps and many more.
+It supports Jetty versions 7, 8 and 9, Tomcat versions 8.5, 9 and 10, multiple web-apps and many more.
 It wraps servlet container functions as convenient Gradle tasks and configuration DSL.
 
 A complete list of Gretty features is available in [feature overview](https://gretty-gradle-plugin.github.io/gretty-doc/Feature-overview.html).
@@ -19,6 +19,96 @@ A complete list of Gretty features is available in [feature overview](https://gr
 If you are new with Gretty, try [getting started](https://gretty-gradle-plugin.github.io/gretty-doc/Getting-started.html) page.
 
 #### :star: What's new
+
+March 30, 2021, Gretty 3.0.4 is out and available at [Gradle Plugins](https://plugins.gradle.org/plugin/org.gretty) and [Bintray](https://bintray.com/javabrett/maven/org.gretty/view).
+
+Special thanks to all contributors to this release, and especially Boris Petrov, Falco Duersch and Stefan Wolf for multiple contributions.
+
+* Changes in this version:
+
+* Enable SSL for Tomcat 10 (#144)
+
+* Fix handling of httpsIdleTimeout in Tomcat (#144)
+
+* Fix behavior of maxPostSize in Tomcat 10 (#144)
+
+* Guard remaining calls to Connector#setProperty with assertions (#144)
+
+* Removed calls to Jetty 9.4 deprecated method (soLingerTime) (#171)
+
+* Update Gradle's testing version to 6.6.1 and geckodriver to 0.27.0
+
+* Fix issue #104 - Bug: HotReload Exception with Composite
+
+* Correctly populate the `writer` field in `ServerStartEventImpl`
+
+* Fix issue #104 - Bug: HotReload Exception with Composite
+
+* Ability to add additinal files to product build.
+
+* Update ASM
+
+* Update default Tomcat versions
+
+* Also run the full test suite on JDK 15
+
+* Use a specific Gradle version for all Travis tasks
+
+* Update Gradle's version to 6.8.3
+
+* Non-blocking context initialization. Fix "redeploy" cleanup.
+
+* Update Groovy
+
+* Migrate from Travis CI to GitHub actions
+
+* Annotate `ServerConfig` to fix Gradle deprecation warnings (#195)
+
+* Annotate `WebAppConfig`, StartBaseTask, AppAfterIntegrationTestTask, AppBeforeIntegrationTestTask, AppServiceTask, FarmStartTask, AppRedeployTask, FarmAfterIntegrationTestTask, FarmBeforeIntegrationTestTask, FarmIntegrationTestTask, JacocoHelper
+
+* Rename annotated interfaces for tasks
+
+* Fix a bunch of Gradle deprecation warnings
+
+* Use `api` for `libs/gretty` dependencies
+
+* Lazily add source and classes dirs
+
+* Use Gradle's `Task Configuration Avoidance` APIs in a few places
+
+* Add validation task to gretty plugin
+
+* Use java-gradle-plugin for generating the plugin properties
+
+* Upgrade to newest version of the publishing plugin
+
+* Enable stricter validation for validatePlugins
+
+* Replace deprecated task name in jacocoInstantiateTasks itest
+
+* Move common.gradle to a precompiled script plugin
+
+* Use different configuration for library and plugin projects
+
+* Move some more things out of `afterEvaluate`
+
+* Fix source- and targetCompatibility versions
+
+* Use publication for uploading to bintray
+
+* Remove the maven plugin
+
+* Use new API for publishing javadoc and sources
+
+* Add a missing `bintrayUserOrg` property
+
+* Fix using the wrong configuration for runner-projects
+
+* Use task configuration avoidance (easy instances) #141
+
+* Add some dependencies needed by Groovy 3
+
+* Spring support: avoid classloading of webapp classes at configuration time
 
 May 7, 2020, Gretty 3.0.3 is out and available at [Gradle Plugins](https://plugins.gradle.org/plugin/org.gretty) and [Bintray](https://bintray.com/javabrett/maven/org.gretty/view).
 

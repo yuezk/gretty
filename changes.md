@@ -2,6 +2,92 @@
 
 [![logo](https://gretty-gradle-plugin.github.io/gretty-doc/images/gretty_logo.png "gretty logo")](https://github.com/gretty-gradle-plugin/gretty)
 
+### Version 3.0.4
+
+* Enable SSL for Tomcat 10 (#144)
+
+* Fix handling of httpsIdleTimeout in Tomcat (#144)
+
+* Fix behavior of maxPostSize in Tomcat 10 (#144)
+
+* Guard remaining calls to Connector#setProperty with assertions (#144)
+
+* Removed calls to Jetty 9.4 deprecated method (soLingerTime) (#171)
+
+* Update Gradle's testing version to 6.6.1 and geckodriver to 0.27.0
+
+* Fix issue #104 - Bug: HotReload Exception with Composite
+
+* Correctly populate the `writer` field in `ServerStartEventImpl`
+
+* Fix issue #104 - Bug: HotReload Exception with Composite
+
+* Ability to add additinal files to product build.
+
+* Update ASM
+
+* Update default Tomcat versions
+
+* Also run the full test suite on JDK 15
+
+* Use a specific Gradle version for all Travis tasks
+
+* Update Gradle's version to 6.8.3
+
+* Non-blocking context initialization. Fix "redeploy" cleanup.
+
+* Update Groovy
+
+* Migrate from Travis CI to GitHub actions
+
+* Annotate `ServerConfig` to fix Gradle deprecation warnings (#195)
+
+* Annotate `WebAppConfig`, StartBaseTask, AppAfterIntegrationTestTask, AppBeforeIntegrationTestTask, AppServiceTask, FarmStartTask, AppRedeployTask, FarmAfterIntegrationTestTask, FarmBeforeIntegrationTestTask, FarmIntegrationTestTask, JacocoHelper
+
+* Rename annotated interfaces for tasks
+
+* Fix a bunch of Gradle deprecation warnings
+
+* Use `api` for `libs/gretty` dependencies
+
+* Lazily add source and classes dirs
+
+* Use Gradle's `Task Configuration Avoidance` APIs in a few places
+
+* Add validation task to gretty plugin
+
+* Use java-gradle-plugin for generating the plugin properties
+
+* Upgrade to newest version of the publishing plugin
+
+* Enable stricter validation for validatePlugins
+
+* Replace deprecated task name in jacocoInstantiateTasks itest
+
+* Move common.gradle to a precompiled script plugin
+
+* Use different configuration for library and plugin projects
+
+* Move some more things out of `afterEvaluate`
+
+* Fix source- and targetCompatibility versions
+
+* Use publication for uploading to bintray
+
+* Remove the maven plugin
+
+* Use new API for publishing javadoc and sources
+
+* Add a missing `bintrayUserOrg` property
+
+* Fix using the wrong configuration for runner-projects
+
+* Use task configuration avoidance (easy instances) #141
+
+* Add some dependencies needed by Groovy 3
+
+* Spring support: avoid classloading of webapp classes at configuration time
+
 ### Version 3.0.3
 
 * Updated ASM to 8.0.1.
