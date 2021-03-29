@@ -10,7 +10,6 @@ package org.akhikhl.gretty
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import org.apache.commons.io.FilenameUtils
-import org.apache.tools.ant.taskdefs.Java
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ProjectDependency
 import org.slf4j.Logger
