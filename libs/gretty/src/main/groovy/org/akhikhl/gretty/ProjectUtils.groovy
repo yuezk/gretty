@@ -83,21 +83,44 @@ final class ProjectUtils {
         addProjectClassPathWithOverlays(urls, proj.project(overlay), dependencyConfigName)
   }
 
-  private static void addProjectClassPathWithDependencies(Set<URL> urls, Project proj, String dependencyConfigName) {
-    if(proj.sourceSets.main.output.files.any { new File(it, 'META-INF/web-fragment.xml').exists() })
-      urls.add proj.jar.archivePath.toURI().toURL()
-    else
-      urls.addAll proj.sourceSets.main.output.files.collect { it.toURI().toURL() }
-    def dependencyConfig = proj.configurations.findByName(dependencyConfigName)
-    if(dependencyConfig) {
-      def files = dependencyConfig.fileCollection { !(it instanceof ProjectDependency) }
-      def grettyProvidedCompileConfig = proj.configurations.findByName('grettyProvidedCompile')
-      if(grettyProvidedCompileConfig)
-        files = files - grettyProvidedCompileConfig
-      urls.addAll(files.collect { it.toURI().toURL() })
-      dependencyConfig.allDependencies.withType(ProjectDependency).each { dep ->
-        addProjectClassPathWithDependencies(urls, dep.getDependencyProject(), dependencyConfigName)
+  private static void addProjectClassPathWithDependencies(Set<URL> urls, Project project, String dependencyConfigName) {
+    Set<File> files = []
+
+    def (outputs, archives) = collectOutputsAndArchivesWithDependencies(project, dependencyConfigName)
+    files += outputs
+    files += project.configurations.findByName(dependencyConfigName).collect().toSet()
+    files -= archives
+
+    def grettyProvidedCompileFiles = project.configurations.findByName('grettyProvidedCompile').collect().toSet()
+    files -= grettyProvidedCompileFiles
+
+    urls.addAll(files.collect { it.toURI().toURL() })
+  }
+
+  private static collectOutputsAndArchivesWithDependencies(Project rootProject, String dependencyConfigName) {
+    Set<File> outputs = []
+    Set<File> archives = []
+
+    walkProjectDependencies(rootProject, dependencyConfigName) { Project project ->
+      def outputFiles = project.sourceSets.main.output.files
+      def archiveFile = project.jar.archiveFile.get().asFile
+      if(outputFiles.any { new File(it, 'META-INF/web-fragment.xml').exists() }) {
+        outputs.add(archiveFile)
+      } else {
+        outputs.addAll(outputFiles)
+        archives.add(archiveFile)
       }
+    }
+
+    return new Tuple2(outputs, archives)
+  }
+
+  private static void walkProjectDependencies(Project project, String dependencyConfigName, Closure projectClosure) {
+    def dependencyConfig = project.configurations.findByName(dependencyConfigName)
+    if (!dependencyConfig) return
+    projectClosure(project)
+    dependencyConfig.allDependencies.withType(ProjectDependency).each {
+      walkProjectDependencies(it.dependencyProject, dependencyConfigName, projectClosure)
     }
   }
 
