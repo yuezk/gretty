@@ -4,11 +4,11 @@
 
 ### Version 3.0.4
 
-* Enable SSL for Tomcat 10 (#144)
+* Gradle 7 support
 
 * Fix handling of httpsIdleTimeout in Tomcat (#144)
 
-* Fix behavior of maxPostSize in Tomcat 10 (#144)
+* Fix behavior of maxPostSize in Tomcat (#144)
 
 * Guard remaining calls to Connector#setProperty with assertions (#144)
 
