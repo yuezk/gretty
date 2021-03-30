@@ -44,10 +44,3 @@ jobs:
           ../gradlew --no-daemon --warning-mode all -PgeckoDriverPlatform=linux64 -PgeckoDriverVersion=$GECKO_DRIVER_VERSION -PtestAllContainers=$TEST_ALL_CONTAINERS testAll
           cd ..
           set +e
-
-      - name: Publish to Bintray
-        if: ${{ matrix.java == 11 && github.ref == 'refs/heads/master' && github.event_name == 'push' }}
-        env:
-          BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
-          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
-        run: ./gradlew --no-daemon --warning-mode all artifactoryPublish -PbintrayUser=$BINTRAY_USER -PbintrayKey=$BINTRAY_KEY -PbintrayRepo=$BINTRAY_REPO -PbintrayPackage=$BINTRAY_PACKAGE
