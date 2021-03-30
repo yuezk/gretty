@@ -6,8 +6,8 @@
 [![Snapshot](https://img.shields.io/badge/current-3.0.5--SNAPSHOT-47b31f.svg)](https://github.com/gretty-gradle-plugin/gretty/tree/master)
 [![License](https://img.shields.io/badge/license-MIT-47b31f.svg)](#copyright-and-license)
 
-Gretty is a feature-rich gradle plugin for running web-apps on embedded servlet containers.
-It supports Jetty versions 7, 8 and 9, Tomcat versions 8.5, 9 and 10, multiple web-apps and many more.
+Gretty is a feature-rich Gradle plugin for running web-apps on embedded servlet containers.
+It supports Jetty versions 7, 8 and 9, Tomcat versions 8.5 and 9, multiple web-apps and many more.
 It wraps servlet container functions as convenient Gradle tasks and configuration DSL.
 
 A complete list of Gretty features is available in [feature overview](https://gretty-gradle-plugin.github.io/gretty-doc/Feature-overview.html).
@@ -26,11 +26,11 @@ Special thanks to all contributors to this release, and especially Boris Petrov,
 
 * Changes in this version:
 
-* Enable SSL for Tomcat 10 (#144)
+* Gradle 7 support
 
 * Fix handling of httpsIdleTimeout in Tomcat (#144)
 
-* Fix behavior of maxPostSize in Tomcat 10 (#144)
+* Fix behavior of maxPostSize in Tomcat (#144)
 
 * Guard remaining calls to Connector#setProperty with assertions (#144)
 
