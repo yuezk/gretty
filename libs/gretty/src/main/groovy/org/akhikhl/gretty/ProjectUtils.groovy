@@ -252,7 +252,7 @@ final class ProjectUtils {
       return wconfig.springBoot
     }
     if(!wconfig.projectPath) {
-      return false;
+      return false
     }
     def compileConfig = project.project(wconfig.projectPath).configurations.findByName('compileClasspath')
     compileConfig && compileConfig.resolvedConfiguration.resolvedArtifacts.find {
